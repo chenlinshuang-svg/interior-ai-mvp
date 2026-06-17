@@ -1,0 +1,12 @@
+{
+  "target_layers": {
+    "WALL": ["WALL", "A-WALL", "墙体", "墙"],
+    "DOOR": ["DOOR", "A-DOOR", "门"],
+    "WINDOW": ["WINDOW", "A-WINDOW", "窗"],
+    "ROOM_NAME": ["ROOM", "ROOM_NAME", "TEXT", "房间", "房间名称"]
+  },
+  "remove_layers_keywords": [
+    "FURN", "家具", "CEILING", "吊顶", "LIGHT", "灯", "ELEC", "电", "WATER", "水", "DIM", "尺寸", "标注", "AXIS", "轴线", "HATCH", "填充"
+  ],
+  "keep_text_layers": ["ROOM_NAME"]
+}
