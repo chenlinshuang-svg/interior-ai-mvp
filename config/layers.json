@@ -1,0 +1,6 @@
+{
+  "wall_layers": ["WALL", "A-WALL", "墙体", "墙"],
+  "door_layers": ["DOOR", "A-DOOR", "门"],
+  "window_layers": ["WINDOW", "A-WINDOW", "窗"],
+  "room_text_layers": ["ROOM", "ROOM_NAME", "TEXT", "房间", "房间名称"]
+}
