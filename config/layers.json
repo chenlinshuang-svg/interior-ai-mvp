@@ -1,6 +1,7 @@
 {
-  "wall_layers": ["WALL", "A-WALL", "墙体", "墙"],
-  "door_layers": ["DOOR", "A-DOOR", "门"],
-  "window_layers": ["WINDOW", "A-WINDOW", "窗"],
-  "room_text_layers": ["ROOM", "ROOM_NAME", "TEXT", "房间", "房间名称"]
+  "wall_layers": ["WALL", "A-WALL", "墙体", "墙", "建筑墙线", "结构墙"],
+  "door_layers": ["DOOR", "A-DOOR", "门", "门洞"],
+  "window_layers": ["WINDOW", "A-WINDOW", "窗", "窗户"],
+  "room_text_layers": ["ROOM_TEXT", "ROOM", "ROOM_NAME", "TEXT", "房间", "房间名称", "空间名称"],
+  "remove_layers": ["DIM", "DIMENSION", "标注", "尺寸", "FURN", "FURNITURE", "家具", "CEILING", "吊顶", "LIGHT", "灯具", "ELECTRIC", "水电", "HATCH", "填充", "AXIS", "轴线"]
 }
