@@ -1,0 +1,9 @@
+{
+  "unit": "mm",
+  "floor_height": 2800,
+  "wall_height": 2800,
+  "wall_thickness": 200,
+  "door_height": 2100,
+  "window_sill_height": 900,
+  "window_height": 1200
+}
