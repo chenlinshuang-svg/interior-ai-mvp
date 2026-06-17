@@ -1,9 +1,16 @@
 {
   "unit": "mm",
+  "blender_unit_scale": 0.001,
   "floor_height": 2800,
   "wall_height": 2800,
   "wall_thickness": 200,
+  "door_width": 900,
   "door_height": 2100,
+  "window_width": 1200,
+  "window_height": 1200,
   "window_sill_height": 900,
-  "window_height": 1200
+  "snap_tolerance": 20,
+  "door_window_wall_match_tolerance": 150,
+  "max_reasonable_plan_size_mm": 100000,
+  "min_reasonable_plan_size_mm": 1000
 }
