@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-"""Run Phase 0-2: CAD standardization, DXF parsing, Blender shell generation."""
 from __future__ import annotations
 
 import argparse
@@ -17,9 +16,10 @@ def run(cmd: list[str]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input_dxf", help="Input DWG/DXF path. DWG must be converted to DXF first.")
-    parser.add_argument("--skip-blender", action="store_true", help="Only generate standardized DXF and project.json.")
+    parser = argparse.ArgumentParser(description="Run CAD standardization, validation, parsing, preview, and Blender shell generation.")
+    parser.add_argument("input_dxf", help="Input DXF path. Convert DWG to DXF first.")
+    parser.add_argument("--skip-blender", action="store_true", help="Stop before Blender.")
+    parser.add_argument("--keep-warnings", action="store_true", help="Continue when validation reports warnings.")
     args = parser.parse_args()
 
     input_path = Path(args.input_dxf)
@@ -28,26 +28,40 @@ def main() -> None:
 
     out_dir = ROOT / "output"
     std_dir = out_dir / "standardized"
-    out_dir.mkdir(exist_ok=True)
-    std_dir.mkdir(parents=True, exist_ok=True)
+    diag_dir = out_dir / "diagnostics"
+    for folder in (out_dir, std_dir, diag_dir):
+        folder.mkdir(parents=True, exist_ok=True)
 
     stem = input_path.stem
     standardized = std_dir / f"{stem}_standardized.dxf"
+    dxf_report = diag_dir / "dxf_report.json"
+    project_raw = out_dir / "project_raw.json"
     project_json = out_dir / "project.json"
+    project_report = diag_dir / "project_report.json"
+    preview_png = diag_dir / "plan_preview.png"
     shell_blend = out_dir / "shell.blend"
 
     run([sys.executable, str(ROOT / "scripts" / "00_standardize_cad.py"), str(input_path), str(standardized)])
-    run([sys.executable, str(ROOT / "scripts" / "01_parse_cad.py"), str(standardized), str(project_json)])
+    run([sys.executable, str(ROOT / "scripts" / "00b_validate_dxf.py"), str(standardized), str(dxf_report)])
+    run([sys.executable, str(ROOT / "scripts" / "01_parse_cad.py"), str(standardized), str(project_raw)])
+
+    validate_cmd = [sys.executable, str(ROOT / "scripts" / "01b_validate_project_json.py"), str(project_raw), str(project_json), str(project_report)]
+    if args.keep_warnings:
+        validate_cmd.append("--keep-warnings")
+    run(validate_cmd)
+
+    run([sys.executable, str(ROOT / "scripts" / "02b_generate_plan_preview.py"), str(project_json), str(preview_png)])
 
     if args.skip_blender:
-        print(f"Generated {project_json}")
+        print(f"Generated: {project_json}")
+        print(f"Generated: {preview_png}")
         return
 
     blender = shutil.which("blender")
     if not blender:
-        print("Blender command not found. Phase 0 and Phase 1 finished.")
-        print(f"Generated: {standardized}")
+        print("Blender command not found. JSON and diagnostics were generated.")
         print(f"Generated: {project_json}")
+        print(f"Generated: {preview_png}")
         return
 
     run([blender, "--background", "--python", str(ROOT / "scripts" / "02_build_shell_blender.py"), "--", str(project_json), str(shell_blend)])
